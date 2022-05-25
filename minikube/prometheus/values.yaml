@@ -1,0 +1,105 @@
+### Not yet planned to use the Promethus alert manager using grafana things now, will invesigate this later
+alertmanager:
+  enabled: false
+
+  ingress:
+    enabled: false
+    annotations: {}
+    extraLabels: {}
+    hosts: []
+    path: /
+    pathType: Prefix
+    extraPaths: []
+    tls: []
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256M"
+    limits:
+      cpu: "500m"
+      memory: "512M"
+
+configmapReload:
+  prometheus:
+    enabled: false
+  alertmanager:
+    enabled: false
+
+kubeStateMetrics:
+  enabled: false ## Kube metrics for SRE team, will work on devops topics
+
+kube-state-metrics:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+nodeExporter:
+  enabled: false
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256M"
+    limits:
+      cpu: "500m"
+      memory: "512M"
+
+server:
+  enabled: true
+  global:
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    evaluation_interval: 1m
+
+  ingress:
+    enabled: true
+    ingressClassName: dev-nginx
+    annotations:
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+      nginx.ingress.kubernetes.io/http2-push-preload: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: 8k
+      nginx.ingress.kubernetes.io/proxy-buffer-size: 8k
+      nginx.ingress.kubernetes.io/proxy-buffering: "on"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
+      nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    hosts:
+      - master.example.com
+    path: /
+    pathType: Prefix
+
+  persistentVolume:
+    enabled: true
+    mountPath: /data
+    size: 8Gi
+
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "400M"
+    limits:
+      cpu: "1000m"
+      memory: "512M"
+  retention: "3d"
+
+pushgateway:
+  enabled: false
+
+# extraScrapeConfigs:
+#   |
+#   - job_name: kube-state-metrics
+#     metrics_path: /metrics
+#     static_configs:
+#       - targets:
+#           - prometheus-kube-state-metrics:8080
+#         labels:
+#           group: "kind"
+#     relabel_configs:
+#       - target_label: cluster
+#         replacement: kind

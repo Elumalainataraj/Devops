@@ -1,0 +1,40 @@
+defaultBackend:
+  enabled: false
+controller:
+  metrics:
+    enabled: true
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "10254"
+  ingressClassResource:
+    name: dev-nginx
+  resources:
+    limits:
+      cpu: 250m
+      memory: 0.5Gi
+    requests:
+      cpu: 200m
+      memory: 200Mi
+  # autoscaling:
+  #   enabled: false
+  #   minReplicas: 1
+  #   maxReplicas: 7
+  #   targetCPUUtilizationPercentage: 70
+  #   targetMemoryUtilizationPercentage: 80
+  containerPort:
+    http: 80
+    https: 443
+    # special: 2443
+  service:
+    enabled: true
+    type: NodePort
+    nodePorts:
+      http: 32080
+      https: 31443
+      tcp:
+        2443: 32443
+#### Enable this if you have a Mongo controller in the Kube
+        27017: 31697
+tcp:
+  27017: "default/bpmn-mongodb-svc:27017"
