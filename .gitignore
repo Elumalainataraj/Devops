@@ -1,0 +1,23 @@
+
+### default ###
+
+.gradle
+build/
+out/
+bin/
+logs/
+data/
+
+# Mac
+.DS_Store
+
+### log files ###
+*.tar
+*.log
+*.gz
+.vscode/
+
+# Ignore Intellij files
+.idea/
+*.iml
+*.iws
