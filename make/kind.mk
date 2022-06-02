@@ -11,5 +11,3 @@ kind-cluster:
 delete-kind:
 	@kind delete cluster --name k8s-1.21.1
 
-load-bpmn:
-	@kind load docker-image visual/engine:lts --name k8s-1.21.1 --name k8s-1.21.1 --nodes k8s-1.21.1-worker
