@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "bpnm-engine.fullname" . }}
+  name: {{ include "bpmn-engine.fullname" . }}
   labels:
-    {{- include "bpnm-engine.labels" . | nindent 4 }}
+    {{- include "bpmn-engine.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "bpnm-engine.selectorLabels" . | nindent 4 }}
+    {{- include "bpmn-engine.selectorLabels" . | nindent 4 }}
