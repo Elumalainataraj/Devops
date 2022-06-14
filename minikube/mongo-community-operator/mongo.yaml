@@ -4,7 +4,7 @@ kind: MongoDBCommunity
 metadata:
   name: bpmn-mongodb
 spec:
-  members: 2   ### Make sure you create a 2 node cluster.
+  members: 1   ### Make sure you create a 2 node cluster.
   type: ReplicaSet
   version: "4.2.6"
   security:
@@ -20,6 +20,10 @@ spec:
             actions:
               - find
               - listDatabases
+              - dropCollection
+              - createCollection
+              - createIndex
+              - dropIndex
         roles: []
   users:
     - name: my-user
@@ -37,10 +41,10 @@ spec:
     # - name: bpmn
     #   db: bpmn
     #   passwordSecretRef: # a reference to the secret that will be used to generate the user's password
-    #     name: my-user-password
+    #     name: db-user-password
     #   roles:
     #     - name: bpnmRole # apply the custom role to the user
-    #       db: admin
+    #       db: bpmn
     #   scramCredentialsSecretName: my-scram
   statefulSet:
     spec:
@@ -75,6 +79,15 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: my-user-password
+type: Opaque
+stringData:
+  password: password
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-user-password
 type: Opaque
 stringData:
   password: password
