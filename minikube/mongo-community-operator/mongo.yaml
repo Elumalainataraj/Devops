@@ -10,6 +10,17 @@ spec:
   security:
     authentication:
       modes: ["SCRAM"]
+    roles: # custom roles are defined here
+      - role: bpnmRole
+        db: admin
+        privileges:
+          - resource:
+              db: "bpmn"
+              collection: "Cbpmn" # an empty string indicates any collection
+            actions:
+              - find
+              - listDatabases
+        roles: []
   users:
     - name: my-user
       db: admin
@@ -20,7 +31,40 @@ spec:
           db: admin
         - name: userAdminAnyDatabase
           db: admin
+        - name: bpnmRole # apply the custom role to the user
+          db: admin
       scramCredentialsSecretName: my-scram
+    # - name: bpmn
+    #   db: bpmn
+    #   passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+    #     name: my-user-password
+    #   roles:
+    #     - name: bpnmRole # apply the custom role to the user
+    #       db: admin
+    #   scramCredentialsSecretName: my-scram
+  statefulSet:
+    spec:
+      template:
+        spec:
+          # resources can be specified by applying an override
+          # per container name.
+          containers:
+            - name: mongod
+              resources:
+                limits:
+                  cpu: "0.2"
+                  memory: 250M
+                requests:
+                  cpu: "0.2"
+                  memory: 200M
+            - name: mongodb-agent
+              resources:
+                limits:
+                  cpu: "0.2"
+                  memory: 250M
+                requests:
+                  cpu: "0.2"
+                  memory: 200M
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib
 
