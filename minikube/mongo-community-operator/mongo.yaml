@@ -19,11 +19,8 @@ spec:
               collection: "Cbpmn" # an empty string indicates any collection
             actions:
               - find
-              - listDatabases
-              - dropCollection
-              - createCollection
-              - createIndex
-              - dropIndex
+              - insert
+              - update
         roles: []
   users:
     - name: my-user
@@ -37,15 +34,11 @@ spec:
           db: admin
         - name: bpnmRole # apply the custom role to the user
           db: admin
+        - name: readWrite
+          db: bpmn
+        - name: dbAdminAnyDatabase
+          db: bpmn
       scramCredentialsSecretName: my-scram
-    # - name: bpmn
-    #   db: bpmn
-    #   passwordSecretRef: # a reference to the secret that will be used to generate the user's password
-    #     name: db-user-password
-    #   roles:
-    #     - name: bpnmRole # apply the custom role to the user
-    #       db: bpmn
-    #   scramCredentialsSecretName: my-scram
   statefulSet:
     spec:
       template:
@@ -79,15 +72,6 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: my-user-password
-type: Opaque
-stringData:
-  password: password
-
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: db-user-password
 type: Opaque
 stringData:
   password: password
