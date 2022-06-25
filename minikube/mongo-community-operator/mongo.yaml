@@ -15,7 +15,7 @@ spec:
         db: admin
         privileges:
           - resource:
-              db: "bpmn"
+              db: "VizPlatform_MVP"
               collection: "Cbpmn" # an empty string indicates any collection
             actions:
               - find
@@ -35,9 +35,9 @@ spec:
         - name: bpnmRole # apply the custom role to the user
           db: admin
         - name: readWrite
-          db: bpmn
+          db: VizPlatform_MVP
         - name: dbAdminAnyDatabase
-          db: bpmn
+          db: VizPlatform_MVP
       scramCredentialsSecretName: my-scram
   statefulSet:
     spec:
