@@ -87,6 +87,6 @@ affinity: {}
 
 env:
   open:
-    SPRING_DATA_MONGODB_URI: mongodb+srv://my-user:password@bpmn-mongodb-svc:27017/VizPlatform_MVP
+    SPRING_DATA_MONGODB_URI: mongodb://my-user:password@bpmn-mongodb-0.bpmn-mongodb-svc.default.svc.cluster.local:27017/VizPlatform_MVP?authSource=admin&retryWrites=false&readPreference=primaryPreferred&directConnection=true
   
 secrets:
