@@ -35,10 +35,10 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "400m"
+            cpu: "200m"
           limits:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "820Mi"
+            cpu: "400m"
         args: ["start-dev"]
         env:
         - name: KEYCLOAK_ADMIN
@@ -47,13 +47,22 @@ spec:
           value: "admin"
         - name: KC_PROXY
           value: "edge"
+        - name: JAVA_OPTS_APPEND
+          value: "-Dkeycloak.import=/import/realm.json"
         ports:
         - name: http
           containerPort: 8080
+        volumeMounts:
+          - name: keycloak-volume
+            mountPath: /import
         readinessProbe:
           httpGet:
             path: /realms/master
             port: 8080
+      volumes:
+        - name: keycloak-volume
+          configMap:
+            name: keycloak-configmap
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -90,3 +99,84 @@ spec:
                 name: keycloak
                 port:
                   number: 8080
+
+---
+apiVersion: v1
+data:
+  realm.json: |
+        {
+            "realm": "vizual",
+            "enabled": true,
+            "sslRequired": "external",
+            "registrationAllowed": true,
+            "privateKey": "MIICXAIBAAKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQABAoGAfmO8gVhyBxdqlxmIuglbz8bcjQbhXJLR2EoS8ngTXmN1bo2L90M0mUKSdc7qF10LgETBzqL8jYlQIbt+e6TH8fcEpKCjUlyq0Mf/vVbfZSNaVycY13nTzo27iPyWQHK5NLuJzn1xvxxrUeXI6A2WFpGEBLbHjwpx5WQG9A+2scECQQDvdn9NE75HPTVPxBqsEd2z10TKkl9CZxu10Qby3iQQmWLEJ9LNmy3acvKrE3gMiYNWb6xHPKiIqOR1as7L24aTAkEAtyvQOlCvr5kAjVqrEKXalj0Tzewjweuxc0pskvArTI2Oo070h65GpoIKLc9jf+UA69cRtquwP93aZKtW06U8dQJAF2Y44ks/mK5+eyDqik3koCI08qaC8HYq2wVl7G2QkJ6sbAaILtcvD92ToOvyGyeE0flvmDZxMYlvaZnaQ0lcSQJBAKZU6umJi3/xeEbkJqMfeLclD27XGEFoPeNrmdx0q10Azp4NfJAY+Z8KRyQCR2BEG+oNitBOZ+YXF9KCpH3cdmECQHEigJhYg+ykOvr1aiZUMFT72HU0jnmQe2FVekuG+LJUt2Tm7GtMjTFoGpf0JwrVuZN39fOYAlo+nTixgeW7X8Y=",
+            "publicKey": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQAB",
+            "requiredCredentials": [ "password" ],
+            "users" : [
+                {
+                    "username" : "user",
+                    "enabled": true,
+                    "email" : "user@vizualplatform.com",
+                    "firstName": "vizual",
+                    "lastName": "platform",
+                    "credentials" : [
+                        { "type" : "password",
+                          "value" : "password" }
+                    ],
+                    "realmRoles": [ "offline_access", "MY_KEYS1", "MY_KEYS2", "MY_KEYS3" ],
+                    "clientRoles": {
+                        "account": ["view-profile", "manage-account"]
+                    }
+                }
+            ],
+            "roles" : {
+                "realm" : [
+                    {
+                        "name": "MY_KEYS1",
+                        "description": "Describe Key1"
+                    },
+                    {
+                        "name": "MY_KEYS2",
+                        "description": "Describe Key2"
+                    },
+                    {
+                        "name": "MY_KEYS3",
+                        "description": "Describe Key3"
+                    }
+                ]
+            },
+            "scopeMappings": [
+                {
+                    "client": "vizual",
+                    "roles": [ "MY_KEYS1", "MY_KEYS2", "MY_KEYS3" ]
+                },
+                {
+                    "clientScope": "offline_access",
+                    "roles": [
+                      "offline_access"
+                    ]
+                }
+            ],
+            "clients": [
+                {
+                    "clientId": "vizual",
+                    "enabled": true,
+                    "publicClient": true,
+                    "directAccessGrantsEnabled": true,
+                    "redirectUris": [
+                        "/vizual/*"
+                    ]
+                }
+            ],
+            "clientScopeMappings": {
+                "account": [
+                    {
+                        "client": "vizual",
+                        "roles": ["view-profile", "MY_KEYS1", "MY_KEYS2", "MY_KEYS3" ]
+                    }
+                ]
+            }
+        }
+kind: ConfigMap
+metadata:
+  name: keycloak-configmap
