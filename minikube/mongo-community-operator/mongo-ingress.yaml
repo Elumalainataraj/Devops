@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/app: bpmn-mongodb-svc
     app.kubernetes.io/instance: bpmn-mongodb-svc
     app.kubernetes.io/version: "4.2.6"
-    app.kubernetes.io/managed-by: ranjith-ka
+    app.kubernetes.io/managed-by: vizual
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/enable-rewrite-log: "true"

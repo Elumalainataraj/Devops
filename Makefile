@@ -26,6 +26,22 @@ es:
 	@helm install -f minikube/elastic-search/data.yaml elasticsearch-data elastic/elasticsearch
 	@helm install -f minikube/kibana/values.yaml kibana elastic/kibana
 
+prd-keycloak:
+	@kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+	@kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+	@kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/kubernetes.yml
+
+clean-prd-keycloak:
+	@kubectl delete -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/kubernetes.yml
+	@kubectl delete -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+	@kubectl delete -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+
+dev-keycloak:
+	@kubectl apply -f minikube/keycloak/dev-keycloak.yml
+
+clean-dev-keycloak:
+	@kubectl delete -f minikube/keycloak/dev-keycloak.yml
+
 clean-es:
 	@kubectl delete pvc elasticsearch-data-elasticsearch-data-0 elasticsearch-master-elasticsearch-master-0
 
