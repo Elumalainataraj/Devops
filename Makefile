@@ -47,3 +47,12 @@ clean-es:
 
 delete-app:
 	@helm delete grafana prometheus
+
+kafka:
+	@helm repo add confluentinc https://packages.confluent.io/helm
+	@helm upgrade --install confluent-operator confluentinc/confluent-for-kubernetes
+	@kubectl apply -f minikube/kafka/dev.yaml
+
+delete-kafka:
+	@kubectl delete -f minikube/kafka/dev.yaml
+	@helm delete confluent-operator

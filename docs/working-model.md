@@ -44,10 +44,11 @@ Required in laptop to work on all these projects under Vizual platform. Add othe
 - Use some reference for the PR, use Labels.
 - Keep your stakeholders in update.
 - Use reviewers Santhosh/Dinesh/Ranjith/Raghu have access to merge PR.
+- Ensure only Linear commits into main branch. (This is enabled in Branch Protection)
 
 ### Testing
 
 - Testing will happen in local desktop.
 - Assume Docker is running and bring the kube cluster
-- Tester run few `make` command to bring up the local cluster with other depenenices and test your service , either swagger or equivalent service.
+- Tester run few `make` command to bring up the local cluster with other dependencies and test your service , either swagger or equivalent service.
 - Update Readme for instructions in same repo.

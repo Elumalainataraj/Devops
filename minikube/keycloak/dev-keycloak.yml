@@ -69,7 +69,7 @@ kind: Ingress
 metadata:
   name: keycloak
   labels:
-    app.kubernetes.io/name: keycloack
+    app.kubernetes.io/name: keycloak
     app.kubernetes.io/app: keycloak
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/version: "18.0.2"
