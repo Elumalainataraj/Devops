@@ -36,5 +36,6 @@ controller:
         2443: 32443
 #### Enable this if you have a Mongo controller in the Kube
         27017: 31697
+        9092: 31699
 tcp:
   27017: "default/bpmn-mongodb-svc:27017"

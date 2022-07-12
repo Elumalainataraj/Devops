@@ -56,3 +56,11 @@ kafka:
 delete-kafka:
 	@kubectl delete -f minikube/kafka/dev.yaml
 	@helm delete confluent-operator
+
+bkafka:
+	@helm repo add bitnami https://charts.bitnami.com/bitnami
+	@helm install -f minikube/kafka/bitnami-kafka.yaml kafka bitnami/kafka --debug
+	@kubectl apply -f minikube/kafka/bkafa-ingress.yaml
+
+delete-bkafka:
+	@helm delete kafka
