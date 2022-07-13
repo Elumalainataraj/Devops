@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: visual/notification
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -82,5 +82,5 @@ tolerations: []
 affinity: {}
 env:
   open:
-  
+    SPRING_DATA_MONGODB_URI: mongodb://my-user:password@bpmn-mongodb-0.bpmn-mongodb-svc.default.svc.cluster.local:27017/VizPlatform_MVP?authSource=admin&retryWrites=false&readPreference=primaryPreferred&directConnection=true
 secrets:
