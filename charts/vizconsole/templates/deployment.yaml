@@ -1,31 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "front-end.fullname" . }}
+  name: {{ include "vizconsole.fullname" . }}
   labels:
-    {{- include "front-end.labels" . | nindent 4 }}
+    {{- include "vizconsole.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "front-end.selectorLabels" . | nindent 6 }}
+      {{- include "vizconsole.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
       annotations:
-      {{- if eq .Chart.AppVersion "lts" }}
-        rollme: {{ randAlphaNum 5 | quote }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- include "front-end.podAnnotations" . | nindent 8 }}
       labels:
-        {{- include "front-end.selectorLabels" . | nindent 8 }}
+        {{- include "vizconsole.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "front-end.serviceAccountName" . }}
+      serviceAccountName: {{ include "vizconsole.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
