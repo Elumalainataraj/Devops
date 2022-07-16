@@ -32,13 +32,13 @@ spec:
       containers:
       - name: keycloak
         image: quay.io/keycloak/keycloak:18.0.2
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "200m"
-          limits:
-            memory: "820Mi"
-            cpu: "400m"
+        # resources:
+        #   requests:
+        #     memory: "512Mi"
+        #     cpu: "200m"
+        #   limits:
+        #     memory: "820Mi"
+        #     cpu: "400m"
         args: ["start-dev"]
         env:
         - name: KEYCLOAK_ADMIN
@@ -160,8 +160,10 @@ data:
             "clients": [
                 {
                     "clientId": "vizual",
+                    "clientAuthenticatorType": "client-secret",
+                    "secret": "Zv2IXFU6Pi4yqMt9R4pKTnEP5dGAL9Hi",
                     "enabled": true,
-                    "publicClient": true,
+                    "publicClient": false,
                     "directAccessGrantsEnabled": true,
                     "redirectUris": [
                         "/vizual/*"
