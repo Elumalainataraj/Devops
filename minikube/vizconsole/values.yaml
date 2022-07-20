@@ -18,7 +18,6 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-
 resources:
   limits:
     cpu: 200m
