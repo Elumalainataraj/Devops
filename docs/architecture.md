@@ -15,3 +15,7 @@ If GitOps we can Adopt the ArgoCD.
 FrontEnd Service - Canary Deploymnets
 
 Backend - Blue/Green
+
+### Deployments
+
+![vizual](https://user-images.githubusercontent.com/33622670/180281846-49ee2eeb-7bbf-4aec-9266-cb5ac881c9b9.jpg)
