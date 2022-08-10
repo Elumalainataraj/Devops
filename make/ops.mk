@@ -25,15 +25,23 @@ ifeq ($(findstring linux,$(OS_NAME)),linux)
 	@sudo apt-get install helm
 endif
 
+
 ingress:
 	@helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 	@echo Installing Ingress Helm Chart
 	@helm install -f minikube/nginx/values.yaml nginx ingress-nginx/ingress-nginx
 
+clean-ingress:
+	@helm delete nginx
+
 mongo:
 	@helm repo add mongodb https://mongodb.github.io/helm-charts
 	@helm install community-operator mongodb/community-operator
 	@kubectl apply -f minikube/mongo-community-operator/mongo.yaml
+
+clean-mongo:
+	@kubectl delete -f minikube/mongo-community-operator/mongo.yaml
+	@helm delete community-operator
 
 monitoring:
 	@helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -46,41 +54,41 @@ es:
 	@helm install -f minikube/elastic-search/data.yaml elasticsearch-data elastic/elasticsearch
 	@helm install -f minikube/kibana/values.yaml kibana elastic/kibana
 
-prd-keycloak:
+clean-es:
+	@kubectl delete pvc elasticsearch-data-elasticsearch-data-0 elasticsearch-master-elasticsearch-master-0
+
+prd-keycloak-wip:
 	@kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
 	@kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
 	@kubectl apply -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/kubernetes.yml
 
-clean-prd-keycloak:
+clean-prd-keycloak-wip:
 	@kubectl delete -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/kubernetes.yml
 	@kubectl delete -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
 	@kubectl delete -f https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/18.0.2/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
 
-dev-keycloak:
+keycloak:
 	@kubectl apply -f minikube/keycloak/dev-keycloak.yml
 
-clean-dev-keycloak:
+clean-keycloak:
 	@kubectl delete -f minikube/keycloak/dev-keycloak.yml
-
-clean-es:
-	@kubectl delete pvc elasticsearch-data-elasticsearch-data-0 elasticsearch-master-elasticsearch-master-0
 
 delete-app:
 	@helm delete grafana prometheus
 
-kafka:
+kafka-prd-wip:
 	@helm repo add confluentinc https://packages.confluent.io/helm
 	@helm upgrade --install confluent-operator confluentinc/confluent-for-kubernetes
 	@kubectl apply -f minikube/kafka/dev.yaml
 
-delete-kafka:
+delete-kafka-wip:
 	@kubectl delete -f minikube/kafka/dev.yaml
 	@helm delete confluent-operator
 
-bkafka:
+kafka:
 	@helm repo add bitnami https://charts.bitnami.com/bitnami
 	@helm install -f minikube/kafka/bitnami-kafka.yaml kafka bitnami/kafka --debug
 	@kubectl apply -f minikube/kafka/bkafa-ingress.yaml
 
-delete-bkafka:
+clean-kafka:
 	@helm delete kafka
