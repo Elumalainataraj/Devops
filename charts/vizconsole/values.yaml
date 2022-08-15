@@ -87,19 +87,19 @@ affinity: {}
 
 env:
   open:
-    mongoconnectionstring: mongodb://my-user:password@bpmn-mongodb-0.bpmn-mongodb-svc.default.svc.cluster.local:27017/VizPlatform_MVP?authSource=admin&retryWrites=false&readPreference=primaryPreferred&directConnection=true
-    ssourl: http://keycloak:8080/
-    realmName: vizual
-    ssoadminusername: user@vizualplatform.com
-    ssopassword: password
-    ssoclientsecret: Zv2IXFU6Pi4yqMt9R4pKTnEP5dGAL9Hi
-    ssoclientid: vizual
-    serverport: 8000
-    mailhost: smtp.gmail.com
-    mailid: platfromvizual@gmail.com
-    mailpswd: dpjyddtsknzoxghn
-    mongodbname: VizPlatform_MVP
-    accountExpiry: 15
-    # sessionTimeOut: "1000 * 60 * 60 * 5"
+    MONGOCONNECTIONSTRING: mongodb://my-user:password@bpmn-mongodb-0.bpmn-mongodb-svc.default.svc.cluster.local:27017/VizPlatform_MVP?authSource=admin&retryWrites=false&readPreference=primaryPreferred&directConnection=true
+    SSOURL: http://keycloak:8080/
+    REALMNAME: vizual
+    SSOADMINUSERNAME: user@vizualplatform.com
+    SSOPASSWORD: password
+    SSOCLIENTSECRET: Zv2IXFU6Pi4yqMt9R4pKTnEP5dGAL9Hi
+    SSOCLIENTID: vizual
+    SERVERPORT: 8000
+    MAILHOST: smtp.gmail.com
+    MAILID: platfromvizual@gmail.com
+    MAILPSWD: dpjyddtsknzoxghn
+    MONGODBNAME: VizPlatform_MVP
+    ACCOUNTEXPIRY: 15
+    SESSIONTIMEOUT: "18000000"
     deployURL: "http://localhost:40002/deploy/DigiFinance_Loan_Processing_BPMN/"
 secrets:
