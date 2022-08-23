@@ -6,7 +6,7 @@ metadata:
 spec:
   members: 1   ### Make sure you create a 2 node cluster.
   type: ReplicaSet
-  version: "4.2.6"
+  version: "4.4.0"
   security:
     authentication:
       modes: ["SCRAM"]
